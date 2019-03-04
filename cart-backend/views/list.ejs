@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Let's Use EJS</title>
+  </head>
+  <body>
+    <center>
+            <div class="container">
+                    <fieldset>
+                      <form action="/" method="GET">
+                        <button>Home</button>
+                      </form>
+                      <form action="/addItem" method="GET">
+                        <button>Add Item</button>
+                      </form>
+                    </fieldset>
+                  </div>
+    <h1>List of Items</h1>
+    <ul>
+      <table>
+            <!-- Headers for the tables -->
+            <td><b>ID</b></td>
+            <td><b>Name</b></td>
+            <td><b>Description</b></td>
+            <td><b>Price</b></td>
+            <td><b>Amount</b></td>
+            <!-- <td></td> Empty for add item button -->
+            
+            <!-- Print Item Information -->
+            <% for(var i=0; i < cartList.length; i++) { %>
+               <tr>
+                 <td><%= cartList[i].id %></td>
+                 <td><%= cartList[i].name %></td>
+                 <td><%= cartList[i].description %></td>
+                 <td><%= cartList[i].price %></td>
+                 <td><%= cartList[i].amount %></td>
+                 <td>
+                 <!-- <form action="/home" method="GET">
+                    <button>Add Item</button>
+                  </form> -->
+                </td>
+               </tr>
+            <% } %>
+        </table>
+    </ul>
+    </center>
+  </body>
+</html>

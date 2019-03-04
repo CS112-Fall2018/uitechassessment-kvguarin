@@ -9,6 +9,11 @@ const express = require('express');
 const app = express(); // creates an express application
 app.use(express.json()); // this will make the app parse json body sent in the POST request
 app.set('view engine', 'ejs');
+var bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+extended: true
+}));
 
 const cartList = [
     { id: 1, name: "Laptop", description: "512 MB ram, webcam, microphone, keyboard", price: 20, amount: 2 },
@@ -27,7 +32,9 @@ const cartList = [
  * tabular format (not json).
  */
 app.get('/list', (req, res) => {
-    res.send(cartList);
+    res.render('list', {
+        cartList
+    });
 });
 
 /*
@@ -35,9 +42,9 @@ app.get('/list', (req, res) => {
  * Home page containing 2 buttons "Cart List" and "Add Item" and each 
  * button will navigate to a different page
  */
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
     res.render('home');
-    // res.send("Hello World!");
+
 });
 
 /*
@@ -48,7 +55,7 @@ app.get('/home', (req, res) => {
  * request and show that the request was successful.
 */
 app.get('/addItem', (req, res) => {
-    res.send("Add Item Page");
+    res.render('addItem');
 });
 
 /* POST HTTP Requests */
@@ -56,6 +63,7 @@ app.post('/item/add', (req, res) => {
     /* Input validation on POST requests */
     if (!req.body.name || req.body.name.length < 3) { // if name doesn't exist in the body or its length < 3
         res.status(400).send("Name is required and should be minimum 3 characters");
+        // res.status(400).send(req.body.name);
         return; // to prevent the execution of the rest of the code
     }
 
@@ -82,7 +90,10 @@ app.post('/item/add', (req, res) => {
         amount: req.body.amount
     };
     cartList.push(item);
-    res.send(item);
+    // res.send(item);
+    res.render('list', {
+        cartList
+    });
 });
 
 app.listen(5555, () => console.log("Listening on port 5555"));
